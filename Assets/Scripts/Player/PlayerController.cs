@@ -9,13 +9,16 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float moveSpeed;
+    [SerializeField] float maxSpeed;
 
 
     private Rigidbody2D rb;
-    private Vector2 inputDir;
-    private Vector2 _inputDir;
+    private Vector2 moveInputDir;
+    private Vector2 attackInputDir;
     public Animator[] anim;
-    private SpriteRenderer[] renderer;
+    private new SpriteRenderer[] renderer;
+
+    private bool turnHead = true;
    
 
     private void Awake()
@@ -32,8 +35,16 @@ public class PlayerController : MonoBehaviour
 
     public void Move()
     {
-        rb.AddForce(Vector2.right * inputDir.x *moveSpeed, ForceMode2D.Force);
-        rb.AddForce(Vector2.up * inputDir.y * moveSpeed, ForceMode2D.Force);
+        if (moveInputDir.x < 0 && rb.velocity.x > -maxSpeed)
+            rb.AddForce(Vector2.right * moveInputDir.x * moveSpeed, ForceMode2D.Force);
+        else if (moveInputDir.x > 0 && rb.velocity.x < maxSpeed)
+            rb.AddForce(Vector2.right * moveInputDir.x * moveSpeed, ForceMode2D.Force);
+        if (moveInputDir.y < 0 && rb.velocity.y > -maxSpeed)
+            rb.AddForce(Vector2.up * moveInputDir.y * moveSpeed, ForceMode2D.Force);
+        else if (moveInputDir.y > 0 && rb.velocity.y < maxSpeed)
+            rb.AddForce(Vector2.up * moveInputDir.y * moveSpeed, ForceMode2D.Force);
+
+
 
         if (rb.velocity.x < 0)
             renderer[2].flipX = true;
@@ -42,40 +53,43 @@ public class PlayerController : MonoBehaviour
 
         anim[1].SetFloat("MoveSpeedX", rb.velocity.x);
         anim[1].SetFloat("MoveSpeedY", rb.velocity.y);
-
-
-        
     }
     
     private void OnMove(InputValue value)
     {
-        inputDir = value.Get<Vector2>();
+        moveInputDir = value.Get<Vector2>();
 
-        if (inputDir.x > 0)
+        if (moveInputDir.x > 0)
         {
-            renderer[1].flipX = false;
-            anim[0].SetBool("RightMoveHead", true);
+            if (turnHead == true)
+            {
+                renderer[1].flipX = false;
+                anim[0].SetBool("RightMoveHead", true);
+            }
         }
-        else if (inputDir.x < 0)
+        else if (moveInputDir.x < 0)
         {
-            renderer[1].flipX = true;
-            anim[0].SetBool("LeftMoveHead", true);
+            if (turnHead == true)
+            {
+                renderer[1].flipX = true;
+                anim[0].SetBool("LeftMoveHead", true);
+            }
         }
-        else if (inputDir.x == 0)
+        else if (moveInputDir.x == 0)
         {
             anim[0].SetBool("RightMoveHead", false);
             anim[0].SetBool("LeftMoveHead", false);
         }
 
-        if (inputDir.y > 0)
+        if (moveInputDir.y > 0)
         {
             anim[0].SetBool("UpMoveHead", true);
         }
-        else if (inputDir.y < 0)
+        else if (moveInputDir.y < 0)
         {
             anim[0].SetBool("DownMoveHead", true);
         }
-        else if (inputDir.y == 0)
+        else if (moveInputDir.y == 0)
         {
             anim[0].SetBool("UpMoveHead", false);
             anim[0].SetBool("DownMoveHead", false);
@@ -83,33 +97,34 @@ public class PlayerController : MonoBehaviour
     }
     private void OnAttack(InputValue value)
     {
-        _inputDir = value.Get<Vector2>();
-        if (_inputDir.x > 0)
+        attackInputDir = value.Get<Vector2>();
+        turnHead = value.Get<Vector2>().magnitude == 0;
+
+        if (attackInputDir.x > 0)
         {
             renderer[1].flipX = false;
             anim[0].SetBool("RightAttack", true);
-            
         }
-        else if (_inputDir.x < 0)
+        else if (attackInputDir.x < 0)
         {
             renderer[1].flipX = true;
             anim[0].SetBool("LeftAttack", true);
         }
-        else if (_inputDir.x == 0)
+        else if (attackInputDir.x == 0)
         {
             anim[0].SetBool("RightAttack", false);
             anim[0].SetBool("LeftAttack", false);
         }
 
-        if (_inputDir.y > 0)
+        if (attackInputDir.y > 0)
         {
             anim[0].SetBool("UpAttack", true);
         }
-        else if (_inputDir.y < 0)
+        else if (attackInputDir.y < 0)
         {
             anim[0].SetBool("DownAttack", true);
         }
-        else if (_inputDir.y == 0)
+        else if (attackInputDir.y == 0)
         {
             anim[0].SetBool("UpAttack", false);
             anim[0].SetBool("DownAttack", false);

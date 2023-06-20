@@ -16,7 +16,7 @@
                 },
                 {
                     "name": "Attack",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "5d9d2a90-167d-4756-b63d-3cb65e5cddfc",
                     "expectedControlType": "Vector2",
                     "processors": "",
