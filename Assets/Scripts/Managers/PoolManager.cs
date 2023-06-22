@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;     // 유니티 오브젝트 풀이 생겨서 사용해주면 좋을 거 같다
+using UnityEngine.Pool;             // 유니티 오브젝트 풀이 생겨서 사용해주면 좋을 거 같다
 
 public class PoolManager : MonoBehaviour
 {
-    Dictionary<string, ObjectPool<GameObject>> poolDic;
+    Dictionary<string, ObjectPool<GameObject>> poolDic;     // Dictionary - 이름가지고 오브젝트풀들을 따로따로 가지도록해서 관리하자
     Dictionary<string, Transform> poolContainer;
     Transform poolRoot;
     Canvas canvasRoot;
@@ -15,7 +15,7 @@ public class PoolManager : MonoBehaviour
         poolDic = new Dictionary<string, ObjectPool<GameObject>>();
         poolContainer = new Dictionary<string, Transform>();
         poolRoot = new GameObject("PoolRoot").transform;
-        canvasRoot = GameManager.Resource.Instantiate<Canvas>("UI/Canvas");
+        //canvasRoot = GameManager.Resource.Instantiate<Canvas>("UI/Canvas");
     }
 
     public T Get<T>(T original, Vector3 position, Quaternion rotation, Transform parent) where T : Object
@@ -127,8 +127,6 @@ public class PoolManager : MonoBehaviour
             return false;
         }
     }
-
-    // UI용 pooling
     private void CreatePool(string key, GameObject prefab)
     {
         GameObject root = new GameObject();
@@ -161,6 +159,7 @@ public class PoolManager : MonoBehaviour
         poolDic.Add(key, pool);
     }
 
+    // UI용 pooling
     public T GetUI<T>(T original, Vector3 position) where T : Object
     {
         if (original is GameObject)

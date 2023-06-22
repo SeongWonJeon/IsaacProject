@@ -20,8 +20,5 @@ public class Charge : MonoBehaviour
 
     protected virtual void ClearChargeGauge(int number) { }
 
-    protected virtual void UseActive(float gauge)
-    {
-        
-    }
+    protected virtual void UseActive(float gauge) { }
 }

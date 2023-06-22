@@ -4,17 +4,22 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Tilemaps;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float moveSpeed;
     [SerializeField] float maxSpeed;
+    [SerializeField] LeftEyeAttack leftEyeAttack;
+    [SerializeField] RightEyeAttack rightEyeAttack;
 
+    public UnityEvent OnAttacked;
 
-    private Rigidbody2D rb;
     private Vector2 moveInputDir;
     private Vector2 attackInputDir;
+
+    private Rigidbody2D rb;
     public Animator[] anim;
     private new SpriteRenderer[] renderer;
 
@@ -99,6 +104,14 @@ public class PlayerController : MonoBehaviour
     {
         attackInputDir = value.Get<Vector2>();
         turnHead = value.Get<Vector2>().magnitude == 0;
+
+        Fire();
+        OnAttacked?.Invoke();       // 공격했을 때(눈을 감았을 때)발생시킬 소리등등 구현하기
+    }
+
+    public void Fire()
+    {
+        leftEyeAttack.Fire();
 
         if (attackInputDir.x > 0)
         {

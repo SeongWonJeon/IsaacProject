@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class Tears : MonoBehaviour
 {
-    [SerializeField] private float tearsSpeed;
-    private int damage;
+    private Vector2 vec2;
 
-    
-
-    public void SetDamage(int damage)   // TODO : 다시 생각해서 짜야함
+    public void Fire()
     {
-        this.damage = damage;
+        transform.Translate(Vector2.right * vec2.x * GameManager.Data.AttackSpeed);
     }
 }

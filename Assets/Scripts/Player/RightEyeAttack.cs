@@ -1,19 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class RightEyeAttack : MonoBehaviour
 {
-    [SerializeField] private GameObject tears;
+    private Tears tears;
 
-    private Transform pos;
-
-    private void Awake()
+    public void Fire()
     {
-        pos = GetComponent<Transform>();
 
-        //GameManager.Resource.Instantiate<Tears>("Attack/Tears", transform.position, Quaternion.identity, true);
     }
-
-
 }
