@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Monstar
   - Body
+  - Tears
+  - Money
+  - UI
   layers:
   - Default
   - TransparentFX
@@ -15,7 +18,7 @@ TagManager:
   - UI
   - Monstar
   - Item
-  - 
+  - Tears
   - 
   - 
   - 

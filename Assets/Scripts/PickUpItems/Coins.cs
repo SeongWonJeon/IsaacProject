@@ -23,7 +23,6 @@ public class Coins : MonoBehaviour
         if (collision.tag == "Body")
         {
             anim.SetTrigger("IsTrigger");
-            coinPickUp.Play();
             collider2D.enabled = false;
         }
     }

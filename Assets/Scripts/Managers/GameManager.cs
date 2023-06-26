@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Resources;
 using TMPro.EditorUtilities;
 using UnityEditor.EditorTools;
+using UnityEditor.SearchService;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -50,6 +51,11 @@ public class GameManager : MonoBehaviour
         resourceManager.transform.parent = transform;
         resource = resourceManager.AddComponent<ResourceManager>();         // 순서도 중요하다
 
+        GameObject soundManager = new GameObject();
+        soundManager.name = "SoundManager";
+        soundManager.transform.parent = transform;
+        sound = soundManager.AddComponent<SoundManager>();
+
         GameObject poolObj = new GameObject();      // 처음으로 풀오브젝트를 만들어주고 
         poolObj.name = "PoolManager";               // 풀오브젝트의 이름
         poolObj.transform.parent = transform;       // 게임매니저 하위자식으로 두는 방법
@@ -65,9 +71,9 @@ public class GameManager : MonoBehaviour
         dataManager.transform.parent = transform;
         data = dataManager.AddComponent<DataManager>();
 
-        GameObject soundManager = new GameObject();
-        soundManager.name = "SoundManager";
-        soundManager.transform.parent = transform;
-        sound = soundManager.AddComponent<SoundManager>();
+    }
+    public static void Clear()
+    {
+        Sound.Clear();
     }
 }

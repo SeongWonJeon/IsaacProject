@@ -11,8 +11,8 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float moveSpeed;
     [SerializeField] float maxSpeed;
-    [SerializeField] LeftEyeAttack leftEyeAttack;
-    [SerializeField] RightEyeAttack rightEyeAttack;
+    [SerializeField] Eyes eyes;
+    GameObject tears;
 
     public UnityEvent OnAttacked;
 
@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentsInChildren<Animator>();
         renderer = GetComponentsInChildren<SpriteRenderer>();
+        tears = GameManager.Resource.Load<GameObject>("Attack/Tears");
     }
     private void Update()
     {
@@ -111,17 +112,23 @@ public class PlayerController : MonoBehaviour
 
     public void Fire()
     {
-        leftEyeAttack.Fire();
-
-        if (attackInputDir.x > 0)
+        if (attackInputDir.x > 0)           // 오른쪽을 바라본다
         {
             renderer[1].flipX = false;
             anim[0].SetBool("RightAttack", true);
+            GameObject tearsPrefab = GameManager.Pool.Get(tears);
+            tearsPrefab.GetComponent<Tears>().SetStartPos(transform.position);
+            tearsPrefab.transform.position = transform.position;
+            tearsPrefab.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
         }
-        else if (attackInputDir.x < 0)
+        else if (attackInputDir.x < 0)      // 왼쪽
         {
             renderer[1].flipX = true;
             anim[0].SetBool("LeftAttack", true);
+            GameObject tearsPrefab = GameManager.Pool.Get(tears);
+            tearsPrefab.GetComponent<Tears>().SetStartPos(transform.position);
+            tearsPrefab.transform.position = transform.position;
+            tearsPrefab.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
         }
         else if (attackInputDir.x == 0)
         {
@@ -129,13 +136,21 @@ public class PlayerController : MonoBehaviour
             anim[0].SetBool("LeftAttack", false);
         }
 
-        if (attackInputDir.y > 0)
+        if (attackInputDir.y > 0)           // 위
         {
             anim[0].SetBool("UpAttack", true);
+            GameObject tearsPrefab = GameManager.Pool.Get(tears);
+            tearsPrefab.GetComponent<Tears>().SetStartPos(transform.position);
+            tearsPrefab.transform.position = transform.position;
+            tearsPrefab.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
         }
-        else if (attackInputDir.y < 0)
+        else if (attackInputDir.y < 0)      // 아래
         {
             anim[0].SetBool("DownAttack", true);
+            GameObject tearsPrefab = GameManager.Pool.Get(tears);
+            tearsPrefab.GetComponent<Tears>().SetStartPos(transform.position);
+            tearsPrefab.transform.position = transform.position;
+            tearsPrefab.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
         }
         else if (attackInputDir.y == 0)
         {

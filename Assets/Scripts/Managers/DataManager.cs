@@ -8,10 +8,10 @@ public class DataManager : MonoBehaviour
     private int money;
     private int bombs;
     private int keys;
-    private float moveSpeed;
-    private float attackSpeed;
+    private float moveSpeed = 1.5f;
+    private float attackSpeed = 8f;
     private float attackDamage;
-    private float attackRange;
+    private float attackRange = 6f;
 
     public int Money 
     {
@@ -51,6 +51,7 @@ public class DataManager : MonoBehaviour
         get { return moveSpeed; }
         set
         {
+            OnCurMoveSpeedChanged?.Invoke(value);
             moveSpeed = value;
         }
     }
@@ -61,6 +62,7 @@ public class DataManager : MonoBehaviour
         get { return attackSpeed; }
         set
         {
+            OnCurAttackSpeedChanged?.Invoke(value);
             attackSpeed = value;
         }
     }
@@ -71,6 +73,7 @@ public class DataManager : MonoBehaviour
         get { return attackDamage; }
         set
         {
+            OnCurAttackDamageChanged?.Invoke(value);
             attackDamage = value;
         }
     }
@@ -81,6 +84,7 @@ public class DataManager : MonoBehaviour
         get { return attackRange; }
         set
         {
+            OnCurAttackRangeChanged?.Invoke(value);
             attackRange = value;
         }
     }

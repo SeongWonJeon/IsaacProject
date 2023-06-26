@@ -7,14 +7,14 @@ public class PoolManager : MonoBehaviour
 {
     Dictionary<string, ObjectPool<GameObject>> poolDic;     // Dictionary - 이름가지고 오브젝트풀들을 따로따로 가지도록해서 관리하자
     Dictionary<string, Transform> poolContainer;
-    Transform poolRoot;
+    Transform tearsRoot;
     Canvas canvasRoot;
 
     private void Awake()
     {
         poolDic = new Dictionary<string, ObjectPool<GameObject>>();
         poolContainer = new Dictionary<string, Transform>();
-        poolRoot = new GameObject("PoolRoot").transform;
+        tearsRoot = new GameObject("TearsRoot").transform;
         //canvasRoot = GameManager.Resource.Instantiate<Canvas>("UI/Canvas");
     }
 
@@ -131,7 +131,7 @@ public class PoolManager : MonoBehaviour
     {
         GameObject root = new GameObject();
         root.gameObject.name = $"{key}Container";
-        root.transform.parent = poolRoot;
+        root.transform.parent = tearsRoot;
         poolContainer.Add(key, root.transform);
 
         ObjectPool<GameObject> pool = new ObjectPool<GameObject>(
