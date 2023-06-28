@@ -8,8 +8,10 @@ public class Eyes : MonoBehaviour
     [SerializeField] private GameObject leftEye;
     [SerializeField] private GameObject rightEye;
 
-    private bool left = true;
+    /*private bool left = true;
     private bool right = false;
+
+
 
     public void Fire()
     {
@@ -18,21 +20,9 @@ public class Eyes : MonoBehaviour
 
     IEnumerator TearsRoutine()
     {
-        GameManager.Pool.Get(tears);
-
-        if (left == true && right == false)
-        {
-            tears.transform.position = leftEye.transform.position;
-            tears.transform.rotation = Quaternion.identity;
-        }
-        else
-        {
-            tears.transform.position = rightEye.transform.position;
-            tears.transform.rotation = Quaternion.identity;
-        }
-
-
-
+        yield return new WaitForSeconds(1f);
+        left = false;
+        right = true;
         yield return null;
-    }
+    }*/
 }

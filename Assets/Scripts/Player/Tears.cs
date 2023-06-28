@@ -9,23 +9,28 @@ public class Tears : MonoBehaviour
     private float tearsMaxSpeed;
     private float tearsMaxRange;
 
-    private Coroutine coroutine;
+    private Coroutine fireCoroutine;
+    private Coroutine coolCoroutine;
     
     Vector3 pos;
 
+    private Rigidbody2D rb;
+
     private Animator anim;
+
 
     private void Awake()
     {
         moveSpeed = GameManager.Data.MoveSpeed;
         tearsMaxSpeed = GameManager.Data.AttackSpeed;
         tearsMaxRange = GameManager.Data.AttackRange;
+        rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
     }
     private void OnEnable()
     {
         anim.SetBool("IsTouch", false);
-        coroutine = StartCoroutine(TearsFire());
+        fireCoroutine = StartCoroutine(TearsFire());
     }
 
     public void SetStartPos(Vector3 pos)
@@ -38,37 +43,57 @@ public class Tears : MonoBehaviour
         gameObject.SetActive(false);
         GameManager.Pool.Release(this);
         anim.SetBool("IsTouch", false);
+        
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.tag == "UI")
+        if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "Monster" || collision.gameObject.tag == "Structure")
         {
             anim.SetBool("IsTouch", true);
-            StopCoroutine(coroutine);
+            StopCoroutine(fireCoroutine);
         }
-        else
-            anim.SetBool("IsTouch", false);
     }
+    /*private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Wall")
+        {
+            anim.SetBool("IsTouch", true);
+            StopCoroutine(fireCoroutine);
+        }
+        
+    }*/
 
     IEnumerator TearsFire()
     {
-        //TODO : 눈물이 나갈 때 이동하는 방향에 의해서 눈물의 속도와 눈물의 사거리가 변경이 되도록 구현하기
+        
+        yield return null;
+        rb.AddForce(transform.right * tearsMaxSpeed, ForceMode2D.Impulse);
+        
         while (true)
         {
             if (pos.x < gameObject.transform.position.x - tearsMaxRange || pos.x > gameObject.transform.position.x + tearsMaxRange
             || pos.y < gameObject.transform.position.y - tearsMaxRange || pos.y > gameObject.transform.position.y + tearsMaxRange)
             {
+                // TODO : 아래있는 모든걸 코루틴으로 해서 발생시키도록 구현
                 anim.SetBool("IsTouch", true);
+                rb.velocity = Vector3.zero;
+                StopCoroutine(fireCoroutine);               // 계속 if문이 반복되서 안에서 멈추도록 하였다
             }
             else
             {
-                transform.Translate(Vector2.right * tearsMaxSpeed * Time.deltaTime);
+                
                 anim.SetBool("IsTouch", false);
+
             }
             
             yield return null;
         }
         
+    }
+
+    IEnumerator CoolRoutine()           //TODO : 몇초후에 터지도록
+    {
+        yield return null;
     }
 }

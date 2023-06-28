@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float moveSpeed;
     [SerializeField] float maxSpeed;
+    [SerializeField] float damage;
     [SerializeField] Eyes eyes;
     GameObject tears;
 
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(Vector2.right * moveInputDir.x * moveSpeed, ForceMode2D.Force);
         else if (moveInputDir.x > 0 && rb.velocity.x < maxSpeed)
             rb.AddForce(Vector2.right * moveInputDir.x * moveSpeed, ForceMode2D.Force);
+
         if (moveInputDir.y < 0 && rb.velocity.y > -maxSpeed)
             rb.AddForce(Vector2.up * moveInputDir.y * moveSpeed, ForceMode2D.Force);
         else if (moveInputDir.y > 0 && rb.velocity.y < maxSpeed)
@@ -120,6 +122,8 @@ public class PlayerController : MonoBehaviour
             tearsPrefab.GetComponent<Tears>().SetStartPos(transform.position);
             tearsPrefab.transform.position = transform.position;
             tearsPrefab.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            // 눈물을 발사할 때 캐릭터가 움직이는 방향의 velocity만큼 힘들 더 가해주거나 덜 가해주는 방법
+            tearsPrefab.GetComponent<Rigidbody2D>().AddForce(rb.velocity, ForceMode2D.Impulse);
         }
         else if (attackInputDir.x < 0)      // 왼쪽
         {
@@ -129,6 +133,7 @@ public class PlayerController : MonoBehaviour
             tearsPrefab.GetComponent<Tears>().SetStartPos(transform.position);
             tearsPrefab.transform.position = transform.position;
             tearsPrefab.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+            tearsPrefab.GetComponent<Rigidbody2D>().AddForce(rb.velocity, ForceMode2D.Impulse);
         }
         else if (attackInputDir.x == 0)
         {
@@ -143,6 +148,7 @@ public class PlayerController : MonoBehaviour
             tearsPrefab.GetComponent<Tears>().SetStartPos(transform.position);
             tearsPrefab.transform.position = transform.position;
             tearsPrefab.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+            tearsPrefab.GetComponent<Rigidbody2D>().AddForce(rb.velocity, ForceMode2D.Impulse);
         }
         else if (attackInputDir.y < 0)      // 아래
         {
@@ -151,6 +157,7 @@ public class PlayerController : MonoBehaviour
             tearsPrefab.GetComponent<Tears>().SetStartPos(transform.position);
             tearsPrefab.transform.position = transform.position;
             tearsPrefab.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+            tearsPrefab.GetComponent<Rigidbody2D>().AddForce(rb.velocity, ForceMode2D.Impulse);
         }
         else if (attackInputDir.y == 0)
         {
