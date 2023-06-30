@@ -61,7 +61,7 @@ Transform:
   m_GameObject: {fileID: 7726726461073675684}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.59, y: 3.24, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalScale: {x: 4, y: 4, z: 0}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7726726460498226488}
@@ -134,7 +134,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: 9cb0d88eb1a5a0f4eb79da9b376bcb6a, type: 2}
@@ -170,8 +170,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc65238a19acd94a878743988807e04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
-  endPoint: {fileID: 0}
+  leftSummonPoint: {fileID: 7726726460498226491}
+  rightSummonPoint: {fileID: 7726726461577610527}
+  moveSpeed: 15
 --- !u!95 &7726726461073675694
 Animator:
   serializedVersion: 5

@@ -12,6 +12,7 @@ TagManager:
   - Wall
   - Monster
   - Structure
+  - MonsterTears
   layers:
   - Default
   - TransparentFX
@@ -19,10 +20,10 @@ TagManager:
   - Player
   - Water
   - UI
-  - Monstar
+  - Monster
   - Item
   - Tears
-  - 
+  - MonsterTears
   - 
   - 
   - 

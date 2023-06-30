@@ -8,9 +8,11 @@ public class DataManager : MonoBehaviour
     private int money;
     private int bombs;
     private int keys;
+    private int playerHP = 3;
+    private int monsterDamage = 1;
     private float moveSpeed = 1.5f;
-    private float attackSpeed = 8f;
-    private float attackDamage;
+    private float attackSpeed = 1.1f;
+    private float attackDamage = 1f;
     private float attackRange = 6f;
 
     public int Money 
@@ -46,6 +48,22 @@ public class DataManager : MonoBehaviour
     }
     public event UnityAction<int> OnCurKeyChanged;
 
+    public int PlayerHP
+    {
+        get { return playerHP; }
+        set
+        {
+            PlayerHP = value;
+        }
+    }
+    public int MonsterDamage
+    {
+        get { return monsterDamage; }
+        set
+        {
+            MonsterDamage = value;
+        }
+    }
     public float MoveSpeed
     {
         get { return moveSpeed; }

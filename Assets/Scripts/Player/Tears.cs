@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Tears : MonoBehaviour
 {
     [SerializeField] float Speed;
-    private float moveSpeed;
     private float tearsMaxSpeed;
     private float tearsMaxRange;
 
@@ -21,7 +21,6 @@ public class Tears : MonoBehaviour
 
     private void Awake()
     {
-        moveSpeed = GameManager.Data.MoveSpeed;
         tearsMaxSpeed = GameManager.Data.AttackSpeed;
         tearsMaxRange = GameManager.Data.AttackRange;
         rb = GetComponent<Rigidbody2D>();
@@ -66,7 +65,6 @@ public class Tears : MonoBehaviour
 
     IEnumerator TearsFire()
     {
-        
         yield return null;
         rb.AddForce(transform.right * tearsMaxSpeed, ForceMode2D.Impulse);
         
@@ -75,9 +73,7 @@ public class Tears : MonoBehaviour
             if (pos.x < gameObject.transform.position.x - tearsMaxRange || pos.x > gameObject.transform.position.x + tearsMaxRange
             || pos.y < gameObject.transform.position.y - tearsMaxRange || pos.y > gameObject.transform.position.y + tearsMaxRange)
             {
-                // TODO : 아래있는 모든걸 코루틴으로 해서 발생시키도록 구현
-                anim.SetBool("IsTouch", true);
-                rb.velocity = Vector3.zero;
+                coolCoroutine = StartCoroutine(CoolRoutine());
                 StopCoroutine(fireCoroutine);               // 계속 if문이 반복되서 안에서 멈추도록 하였다
             }
             else
@@ -94,6 +90,9 @@ public class Tears : MonoBehaviour
 
     IEnumerator CoolRoutine()           //TODO : 몇초후에 터지도록
     {
+        yield return new WaitForSeconds(0.5f);
+        anim.SetBool("IsTouch", true);
+        rb.velocity = Vector3.zero;
         yield return null;
     }
 }

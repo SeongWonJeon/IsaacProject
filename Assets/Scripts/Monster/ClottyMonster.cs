@@ -1,18 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
 using UnityEngine;
 
-public class DipDadMonster : MonoBehaviour, IDamagable
+public class ClottyMonster : MonoBehaviour, IDamagable
 {
-    [SerializeField] GameObject leftSummonPoint;
-    [SerializeField] GameObject rightSummonPoint;
-    GameObject child;
     public float moveSpeed;
-    private float hp = 6;
+    private float hp = 8f;
 
+    GameObject monsterTears;
     private Rigidbody2D rb;
-    private Transform endPoint;
+
     private Animator anim;
 
     private Coroutine attack;
@@ -21,9 +18,10 @@ public class DipDadMonster : MonoBehaviour, IDamagable
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        monsterTears = GameManager.Resource.Load<GameObject>("Monster/MonsterTears");
     }
 
-    
+
     private void OnEnable()
     {
         attack = StartCoroutine(Moving());
@@ -43,33 +41,35 @@ public class DipDadMonster : MonoBehaviour, IDamagable
 
     IEnumerator Moving()
     {
-        endPoint = GameObject.FindGameObjectWithTag("Player").transform;
+        yield return new WaitForSeconds(1f);
         while (true)
         {
-
-            yield return new WaitForSeconds(1.5f);
-            anim.SetBool("IsCharging", true);
-            yield return new WaitForSeconds(1f);
-            anim.SetBool("IsCharging", false);
-
-            rb.AddForce((new Vector3(endPoint.position.x, endPoint.position.y, 0) - transform.position).normalized * moveSpeed, ForceMode2D.Impulse);
-            
-            if (endPoint.position.x - transform.position.x < 0)
+            Vector3 vect3 = new Vector3(Random.Range(-2.5f, 2.5f), Random.Range(-2.5f, 2.5f), 0);
+            rb.AddForce(vect3 * moveSpeed, ForceMode2D.Impulse);
+            anim.SetBool("IsAttack", true);
+            if (vect3.x < 0)
                 transform.rotation = Quaternion.Euler(0, 180, 0);
             else
                 transform.rotation = Quaternion.Euler(0, 0, 0);
+            yield return new WaitForSeconds(1.2f);
+            anim.SetBool("IsAttack", false);
 
-            anim.SetBool("IsMove", true);
-            yield return new WaitForSeconds(2f);
-            anim.SetBool("IsMove", false);
-            rb.velocity = Vector3.zero;
-            yield return new WaitForSeconds(1f);
+            yield return null;
+            for (int i = 0; i < 360; i += 90)
+            {
+                GameObject attackboll = GameManager.Pool.Get(monsterTears);
+                attackboll.transform.position = transform.position;
+                attackboll.transform.rotation = Quaternion.Euler(0, 0, i);
+            }
+            
 
-
+            yield return null;
         }
-        
     }
-
+    public void StopMove()
+    {
+        rb.velocity = Vector3.zero;
+    }
     public void TakeDamage(float damage)
     {
         hp -= damage;
@@ -84,10 +84,8 @@ public class DipDadMonster : MonoBehaviour, IDamagable
     {
         anim.SetBool("IsDead", true);
         rb.velocity = Vector3.zero;
-        GameManager.Resource.Instantiate<GameObject>("Monster/Dip_Monster", leftSummonPoint.transform.position, Quaternion.identity);
-        GameManager.Resource.Instantiate<GameObject>("Monster/Dip_Monster", rightSummonPoint.transform.position, Quaternion.identity);
         StopCoroutine(attack);
-        
+
     }
 
     public void Dead()
