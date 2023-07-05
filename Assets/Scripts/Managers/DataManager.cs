@@ -10,7 +10,7 @@ public class DataManager : MonoBehaviour
     private int keys;
     private int playerHP = 3;
     private int monsterDamage = 1;
-    private float moveSpeed = 1.5f;
+    private float moveSpeed = 6.0f;
     private float attackSpeed = 1.1f;
     private float attackDamage = 1f;
     private float attackRange = 6f;

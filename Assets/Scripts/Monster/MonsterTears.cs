@@ -47,8 +47,13 @@ public class MonsterTears : MonoBehaviour
         }
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerController>().TakeDamage(GameManager.Data.MonsterDamage);
+            collision.gameObject.GetComponent<Isaac>().TakeDamage(GameManager.Data.MonsterDamage);
+            anim.SetBool("IsTouch", false);
+            gameObject.SetActive(false);
+            StopCoroutine(fireCoroutine);
+            GameManager.Pool.Release(this);
         }
+
     }
     /*private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -62,6 +67,7 @@ public class MonsterTears : MonoBehaviour
 
     IEnumerator TearsFire()
     {
+        yield return null;
         rb.AddForce(transform.right * Speed, ForceMode2D.Impulse);
         anim.SetBool("IsTouch", true);
         yield return null;

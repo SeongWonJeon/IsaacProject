@@ -1,67 +1,58 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public class Tears : MonoBehaviour
+public class BaseTears : MonoBehaviour
 {
     [SerializeField] float Speed;
-    private float tearsMaxSpeed;
-    private float tearsMaxRange;
+    public float tearsMaxSpeed;
+    public float tearsMaxRange;
 
-    private Coroutine fireCoroutine;
-    private Coroutine coolCoroutine;
-    
-    Vector3 pos;
+    public Coroutine fireCoroutine;
+    public Coroutine coolCoroutine;
 
-    private Rigidbody2D rb;
+    public Vector3 pos;
 
-    private Animator anim;
+    public Rigidbody2D rb;
+
+    public Animator[] anim;
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         tearsMaxSpeed = GameManager.Data.AttackSpeed;
         tearsMaxRange = GameManager.Data.AttackRange;
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+        anim = GetComponentsInChildren<Animator>();
     }
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
-        anim.SetBool("IsTouch", false);
+        anim[0].SetBool("IsTouch", false);
         fireCoroutine = StartCoroutine(TearsFire());
     }
 
-    public void SetStartPos(Vector3 pos)
+    public virtual void SetStartPos(Vector3 pos)
     {
         this.pos = pos;
     }
 
-    public void Disappear()
+    protected virtual void Disappear()
     {
         gameObject.SetActive(false);
         GameManager.Pool.Release(this);
-        anim.SetBool("IsTouch", false);
+        anim[0].SetBool("IsTouch", false);
         
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "Monster" || collision.gameObject.tag == "Structure")
         {
-            anim.SetBool("IsTouch", true);
+            anim[0].SetBool("IsTouch", true);
             StopCoroutine(fireCoroutine);
+
         }
     }
-    /*private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Wall")
-        {
-            anim.SetBool("IsTouch", true);
-            StopCoroutine(fireCoroutine);
-        }
-        
-    }*/
 
     IEnumerator TearsFire()
     {
@@ -79,8 +70,7 @@ public class Tears : MonoBehaviour
             else
             {
                 
-                anim.SetBool("IsTouch", false);
-
+                anim[0].SetBool("IsTouch", false);
             }
             
             yield return null;
@@ -90,8 +80,9 @@ public class Tears : MonoBehaviour
 
     IEnumerator CoolRoutine()           //TODO : 몇초후에 터지도록
     {
+        yield return null;
         yield return new WaitForSeconds(0.5f);
-        anim.SetBool("IsTouch", true);
+        anim[0].SetBool("IsTouch", true);
         rb.velocity = Vector3.zero;
         yield return null;
     }

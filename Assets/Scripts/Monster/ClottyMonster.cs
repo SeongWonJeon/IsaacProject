@@ -2,41 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClottyMonster : MonoBehaviour, IDamagable
+class ClottyMonster : Monster
 {
-    public float moveSpeed;
-    private float hp = 8f;
-
     GameObject monsterTears;
-    private Rigidbody2D rb;
-
-    private Animator anim;
 
     private Coroutine attack;
 
-    private void Awake()
+    protected override void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        base.Awake();
         anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
         monsterTears = GameManager.Resource.Load<GameObject>("Monster/MonsterTears");
     }
 
+    private void Start()
+    {
+        moveSpeed = 2.5f;
+        hp = 8;
+    }
 
     private void OnEnable()
     {
         attack = StartCoroutine(Moving());
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    protected override void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player")
-        {
-            collision.gameObject.GetComponent<PlayerController>().TakeDamage(GameManager.Data.MonsterDamage);
-        }
-        if (collision.gameObject.tag == "Tears")
-        {
-            TakeDamage(GameManager.Data.AttackDamage);
-        }
+        base.OnCollisionEnter2D(collision);
     }
 
     IEnumerator Moving()
@@ -61,7 +53,6 @@ public class ClottyMonster : MonoBehaviour, IDamagable
                 attackboll.transform.position = transform.position;
                 attackboll.transform.rotation = Quaternion.Euler(0, 0, i);
             }
-            
 
             yield return null;
         }
@@ -70,27 +61,19 @@ public class ClottyMonster : MonoBehaviour, IDamagable
     {
         rb.velocity = Vector3.zero;
     }
-    public void TakeDamage(float damage)
+    public override void TakeDamage(float damage)
     {
-        hp -= damage;
-
-        if (hp == 0)
-        {
-            Die();
-        }
+        base.TakeDamage(damage);
     }
 
-    private void Die()
+    protected override void Die()
     {
-        anim.SetBool("IsDead", true);
-        rb.velocity = Vector3.zero;
+        base.Die();
         StopCoroutine(attack);
-
     }
 
-    public void Dead()
+    protected override void Dead()
     {
-        gameObject.SetActive(false);
-        anim.SetBool("IsDead", false);
+        base.Dead();
     }
 }
