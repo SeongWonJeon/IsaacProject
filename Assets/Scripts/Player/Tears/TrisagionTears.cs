@@ -25,10 +25,9 @@ class TrisagionTears : BaseTears
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Monster" || collision.gameObject.tag == "Structure")
+        if (collision.gameObject.tag == "Monster" )//|| collision.gameObject.tag == "Structure")
         {
-            collision.gameObject.GetComponent<IDamagable>()
-                .TakeDamage(GameManager.Data.AttackDamage);
+            collision.gameObject.GetComponent<IDamagable>().TakeDamage(GameManager.Data.AttackDamage);
         }
     }
 }

@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseTears : MonoBehaviour
+abstract class BaseTears : MonoBehaviour
 {
     [SerializeField] float Speed;
+    public float damage;
     public float tearsMaxSpeed;
     public float tearsMaxRange;
 
@@ -20,6 +21,7 @@ public class BaseTears : MonoBehaviour
 
     protected virtual void Awake()
     {
+        damage = GameManager.Data.AttackDamage;
         tearsMaxSpeed = GameManager.Data.AttackSpeed;
         tearsMaxRange = GameManager.Data.AttackRange;
         rb = GetComponent<Rigidbody2D>();

@@ -8,12 +8,18 @@ abstract class Monster : MonoBehaviour, IDamagable
     protected float hp;
     protected float damage;
 
+    Color colorG = new Color(1, 0.1f, 0.1f, 1);
+    Color colorB = new Color(1, 1, 1, 1);
+
     public Animator anim;
     public Rigidbody2D rb;
+
+    public SpriteRenderer render;
 
     protected virtual void Awake()
     {
         damage = GameManager.Data.MonsterDamage;
+        
     }
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
@@ -31,6 +37,8 @@ abstract class Monster : MonoBehaviour, IDamagable
     {
         hp -= damage;
 
+        StartCoroutine(Flash());
+
         if (hp <= 0)
         {
             Die();
@@ -47,5 +55,14 @@ abstract class Monster : MonoBehaviour, IDamagable
     {
         gameObject.SetActive(false);
         anim.SetBool("IsDead", false);
+        Destroy(gameObject);
+    }
+    IEnumerator Flash()
+    {
+        yield return null;
+        render.color = colorG;
+        yield return new WaitForSeconds(0.2f);
+        render.color = colorB;
+        yield return null;
     }
 }

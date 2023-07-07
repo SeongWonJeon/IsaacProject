@@ -130,8 +130,12 @@ MonoBehaviour:
   colliders: []
   tear: {fileID: 0}
   playerTears: {fileID: 0}
-  lastFire: 0
-  fireDelay: 0
+  lastFire: 1
+  fireDelay: 1
+  flyPatPrefab: {fileID: 0}
+  flyPrefab: {fileID: 0}
+  summonPoint: {fileID: 0}
+  anim: {fileID: 0}
 --- !u!1 &4566612409781854999
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ class ClottyMonster : Monster
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         monsterTears = GameManager.Resource.Load<GameObject>("Monster/MonsterTears");
+        render = GetComponent<SpriteRenderer>();
     }
 
     private void Start()

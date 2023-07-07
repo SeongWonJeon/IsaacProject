@@ -14,6 +14,7 @@ class DipMonster : Monster
         base.Awake();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        render = GetComponent<SpriteRenderer>();
     }
     private void Start()
     {

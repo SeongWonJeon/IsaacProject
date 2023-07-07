@@ -10,6 +10,7 @@ public class DataManager : MonoBehaviour
     private int keys;
     private int playerHP = 3;
     private int monsterDamage = 1;
+    private float bombDamage = 100;
     private float moveSpeed = 6.0f;
     private float attackSpeed = 1.1f;
     private float attackDamage = 1f;
@@ -64,6 +65,15 @@ public class DataManager : MonoBehaviour
             MonsterDamage = value;
         }
     }
+    public float BombDamage
+    {
+        get { return bombDamage; }
+        set
+        {
+            BombDamage = value;
+        }
+    }
+
     public float MoveSpeed
     {
         get { return moveSpeed; }

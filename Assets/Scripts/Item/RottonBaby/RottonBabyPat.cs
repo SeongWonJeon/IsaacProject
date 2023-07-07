@@ -4,8 +4,40 @@ using UnityEngine;
 
 class RottonBabyPat : MonoBehaviour
 {
-    // 일정거리가 멀어지면 멀어졌을 때 플레이어의 위치 - 1정도의 거리이상 멀어지지않도록 이동시키기
-    // 공격은 플레이어가 공격키를 누를 때 마다 몇초 간격으로 아군파리(적의 위치로 찾아가서 자폭하는 파리)를 생성
-     
-    
+    public float speed;
+    public Vector3 followPos;
+    public int followDelay;
+    public Transform parent;
+    public float ar;
+
+    private void Awake()
+    {
+        parent = GameObject.Find("Player").GetComponent<Transform>();
+    }
+    private void Update()
+    {
+        Watch();
+    }
+    private void FixedUpdate()
+    {
+        Follow();
+        
+    }
+
+    private void Watch()
+    {
+        ar = Vector3.SqrMagnitude(parent.position - transform.position);        // SqrMagnitude 두 오브젝트 사이의 거리를 결과로 내어준다.
+
+        if (ar > 1)
+        {
+            followPos = parent.position;
+        }
+        
+    }
+
+    private void Follow()
+    {
+        if (ar > 1)
+            transform.position = Vector3.Lerp(transform.position, followPos, Time.deltaTime * speed);   // Lerp 부드럽게 이동하도록 도와준다.
+    }
 }

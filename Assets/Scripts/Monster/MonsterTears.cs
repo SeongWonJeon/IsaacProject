@@ -42,8 +42,8 @@ public class MonsterTears : MonoBehaviour
         {
             anim.SetBool("IsTouch", false);
             gameObject.SetActive(false);
-            GameManager.Pool.Release(this);
             StopCoroutine(fireCoroutine);
+            GameManager.Pool.Release(this);
         }
         if (collision.gameObject.tag == "Player")
         {
